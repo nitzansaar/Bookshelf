@@ -110,6 +110,7 @@ public class BookshelfKeeper {
     }
     totalOps += res;
     currentOps = res;
+    assert isValidBookshelfKeeper();
     return res;
  }
  
@@ -160,9 +161,9 @@ public class BookshelfKeeper {
           }
  
        }
- 
        totalOps += res;
        currentOps = res;
+       assert isValidBookshelfKeeper();
        return res;
  
     }
@@ -195,6 +196,7 @@ public class BookshelfKeeper {
      * Example return string showing required format: “[1, 3, 5, 7, 33] 4 10”
      * 
      */
+    @Override
     public String toString() {
        return "[" + bookshelf.toString() + "] " + currentOps + " " + totalOps;
        
@@ -238,6 +240,5 @@ public class BookshelfKeeper {
        return i >= halfwayPoint;
  
     }
- 
  
  }

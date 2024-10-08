@@ -203,4 +203,8 @@ public class Bookshelf {
       return false;
    }
 
+   // public boolean isEmpty() {
+   //    return bookshelf.size() == 0;
+   // }
+
 }
