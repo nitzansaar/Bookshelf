@@ -14,13 +14,20 @@ import java.util.Scanner;
  * Class BookshelfKeeperProg
  *
  * This is the main class for running the BookshelfKeeper program. It allows users to input the initial 
- * arrangement of books on a bookshelf, and perform "put" and "pick" operations to modify the bookshelf
- * through a BookshelfKeeper object. The program enforces valid inputs and keeps the bookshelf sorted 
+ * arrangement of books on a bookshelf and perform "put" and "pick" operations to modify the bookshelf
+ * through a BookshelfKeeper object. The program ensures valid inputs and keeps the bookshelf sorted 
  * in non-decreasing order.
  */
 public class BookshelfKeeperProg {
     public final static int EXIT_NUM = 0;
 
+    /**
+     * Main method of the BookshelfKeeper program.
+     * It interacts with the user to receive the initial arrangement of books and handles "put" and "pick"
+     * operations until the user types "end" to exit the program.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
     
@@ -51,6 +58,14 @@ public class BookshelfKeeperProg {
         System.out.println("Exiting Program.");
     }
 
+    /**
+     * Helper method that sets up the initial Bookshelf based on user input.
+     * It prompts the user to enter a sequence of book heights, validates the input,
+     * and returns a Bookshelf object initialized with those books.
+     *
+     * @param scanner Scanner object to read user input.
+     * @return a Bookshelf object with the initial arrangement of books.
+     */
     private static Bookshelf setUpBookshelf(Scanner scanner) {
         Bookshelf bs;        
         // Prompt user for initial arrangement of books
@@ -80,6 +95,15 @@ public class BookshelfKeeperProg {
         return bs;
     }
 
+    /**
+     * Handles user commands ("put", "pick", "end") and performs the corresponding actions
+     * on the BookshelfKeeper object. Validates input and returns a boolean to indicate whether
+     * the program should continue running.
+     *
+     * @param commands The split user input as a string array.
+     * @param bk The BookshelfKeeper object that manages the bookshelf operations.
+     * @return true if the program should continue running, false if it should exit.
+     */
     private static boolean handleOptions(String[] commands, BookshelfKeeper bk) {
         try {
             // Handle "put" command
