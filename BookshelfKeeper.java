@@ -235,7 +235,7 @@ public class BookshelfKeeper {
        while (i < bookshelf.size() && bookshelf.getHeight(i) < height) {
           i++;
        }
-       return i > halfwayPoint;
+       return i >= halfwayPoint;
  
     }
  
