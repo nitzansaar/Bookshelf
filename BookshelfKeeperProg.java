@@ -19,19 +19,40 @@ import java.util.Scanner;
  * in non-decreasing order.
  */
 public class BookshelfKeeperProg {
-    
-    /**
-     * The main method of the BookshelfKeeper program.
-     * It interacts with the user to receive the initial arrangement of books and handles "put" and "pick"
-     * operations until the user types "end" to exit the program.
-     * 
-     * @param args command-line arguments (not used)
-     */
+    public final static int EXIT_NUM = 0;
+
     public static void main(String[] args) {
-        final int EXIT_NUM = 0;
-        Bookshelf bs;
         Scanner scanner = new Scanner(System.in);
+    
+        // Create a BookshelfKeeper object to manage the bookshelf
+        BookshelfKeeper bk = new BookshelfKeeper(setUpBookshelf(scanner));
+        System.out.println(bk.toString());
         
+        // Instructions for user input
+        System.out.println("Type pick <index> or put <height> followed by newline. Type end to exit.");
+        String input;
+        boolean isRunning = true;  // Control flag for loop
+
+        // Main loop to process user commands
+        while (isRunning) {
+            input = scanner.nextLine().trim();
+            String[] commands = input.split("\\s+");
+
+            // Handle user input and update isRunning flag
+            isRunning = handleOptions(commands, bk);
+            
+            if (isRunning) {
+                // Print the current state of the BookshelfKeeper after valid commands
+                System.out.println(bk.toString());
+            }
+        }
+
+        // Program exit message
+        System.out.println("Exiting Program.");
+    }
+
+    private static Bookshelf setUpBookshelf(Scanner scanner) {
+        Bookshelf bs;        
         // Prompt user for initial arrangement of books
         System.out.println("Please enter initial arrangement of books followed by newline:");
         String input = scanner.nextLine().trim();
@@ -44,8 +65,7 @@ public class BookshelfKeeperProg {
                 int num = Integer.parseInt(number);
                 al.add(num);
             }
-        } 
-        
+        }
         // Create a Bookshelf object with the initial arrangement
         bs = new Bookshelf(al);
         
@@ -57,52 +77,42 @@ public class BookshelfKeeperProg {
             System.out.println("ERROR: Height of a book must be positive.\nExiting Program.");
             System.exit(EXIT_NUM);
         }
-        
-        // Create a BookshelfKeeper object to manage the bookshelf
-        BookshelfKeeper bk = new BookshelfKeeper(bs);
-        System.out.println(bk.toString());
-        
-        // Instructions for user input
-        System.out.println("Type pick <index> or put <height> followed by newline. Type end to exit.");
-        
-        // Main loop to process user commands
-        do {
-            input = scanner.nextLine().trim();
-            String[] commands = input.split("\\s+");
-            
+        return bs;
+    }
+
+    private static boolean handleOptions(String[] commands, BookshelfKeeper bk) {
+        try {
             // Handle "put" command
             if (commands[0].equalsIgnoreCase("put")) {
                 if (Integer.parseInt(commands[1]) < 0) {
-                    System.out.println("ERROR: Height of a book must be positive.\nExiting Program.");
-                    System.exit(EXIT_NUM);
+                    System.out.println("ERROR: Height of a book must be positive.");
+                    return false; // Stop the loop
                 }
                 bk.putHeight(Integer.parseInt(commands[1]));
             
             // Handle "pick" command
             } else if (commands[0].equalsIgnoreCase("pick")) {
                 if (Integer.parseInt(commands[1]) >= bk.getNumBooks()) {
-                    System.out.println("ERROR: Entered pick operation is invalid on this shelf.\nExiting Program.");
-                    System.exit(EXIT_NUM);
+                    System.out.println("ERROR: Entered pick operation is invalid on this shelf.");
+                    return false; // Stop the loop
                 }
                 bk.pickPos(Integer.parseInt(commands[1]));
             
             // Handle "end" command
-            } else if (input.equalsIgnoreCase("end")) {
-                System.out.println("Exiting Program.");
-                System.exit(EXIT_NUM);
-            
+            } else if (commands[0].equalsIgnoreCase("end")) {
+                return false; // This will stop the loop
+
             // Handle invalid command
             } else {
-                System.out.println("ERROR: Invalid command. Valid commands are pick, put, or end.\nExiting Program.");
-                System.exit(EXIT_NUM);
+                System.out.println("ERROR: Invalid command. Valid commands are pick, put, or end.");
+                return false; // Stop the loop
             }
-            
-            // Print the current state of the BookshelfKeeper
-            System.out.println(bk.toString());
-
-        } while (!input.equalsIgnoreCase("end"));
+        } catch (NumberFormatException e) {
+            System.out.println("ERROR: Invalid input format.");
+            return false; // Stop the loop
+        }
         
-        // Program exit message
-        System.out.println("Exiting Program.");
+        // Continue the loop
+        return true;
     }
 }
